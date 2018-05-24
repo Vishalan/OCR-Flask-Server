@@ -12,4 +12,5 @@ def process_image(url):
 
 
 def _get_image(url):
-    return Image.open(StringIO(requests.get(url).content))
+    # return Image.open(StringIO(requests.get(url).content))
+    return Image.open(open(url,'rb'))
