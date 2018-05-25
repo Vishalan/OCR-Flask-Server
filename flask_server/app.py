@@ -3,7 +3,7 @@ import logging
 from logging import Formatter, FileHandler
 from flask import Flask, request, jsonify
 
-from ocr import process_image
+from com.ofss.fc.ocr.ocrutils import process_image
 
 app = Flask(__name__)
 _VERSION = 1  # API version
