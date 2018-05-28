@@ -1,0 +1,114 @@
+---
+swagger: "2.0"
+info:
+  description: "This is simple OCR Server"
+  version: "1.0.0"
+  title: "OBP OCR Server"
+host: "localhost:8080"
+basePath: "/v1"
+tags:
+- name: "documents"
+  description: "Documents - Collection Resource"
+- name: "document"
+  description: "Document - Entity Resource"
+schemes:
+- "http"
+paths:
+  /documents:
+    post:
+      tags:
+      - "documents"
+      summary: "Process list of documents"
+      description: ""
+      operationId: "process_documents"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Array of document URIs"
+        required: true
+        schema:
+          $ref: "#/definitions/documentsRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/documentResponse"
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.documents_controller"
+  /documents/document:
+    post:
+      tags:
+      - "document"
+      summary: "Process single document"
+      description: ""
+      operationId: "process_document"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Document URI"
+        required: true
+        schema:
+          $ref: "#/definitions/documentRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Cannot Process Document"
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.document_controller"
+definitions:
+  documentResponse:
+    type: "object"
+    properties:
+      documentID:
+        type: "string"
+      documentPath:
+        type: "integer"
+        format: "int64"
+      type:
+        type: "string"
+        enum:
+        - "jpeg"
+        - "png"
+        - "pdf"
+      extractedText:
+        type: "string"
+    example:
+      extractedText: "extractedText"
+      documentID: "documentID"
+      type: "jpeg"
+      documentPath: 0
+    xml:
+      name: "result"
+  documentsRequest:
+    type: "object"
+    properties:
+      docURIs:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+    xml:
+      name: "input"
+  documentRequest:
+    type: "object"
+    properties:
+      docURI:
+        type: "string"
+    xml:
+      name: "input"
